@@ -147,7 +147,7 @@ public static double computeAmountDue(int c, char t, int min1, double minB1, int
     return;
  }
 
-/**Sorts in descending order an array of integers in parallel with an array of strings.  The original array of integers is preserved while the original form of the array of strings is not preserved. The sorted array of integer is returned. */
+/**Sort in descending order an array of integers in parallel with an array of strings.  The original array of integers is preserved while the original form of the array of strings is not preserved. The sorted array of integer is returned. */
  public static int[] sortArray(int[] array, String[] month){
     int minIndex=0;
     int[] sorted= copyArray(array);
