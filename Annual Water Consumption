@@ -1,0 +1,236 @@
+
+//Chidumije Adinma
+import java.util.Scanner;
+public class ChidumijeAdinmaPrelimActivity2A{
+ /**Computes and returns the average of the elements of an array of floating point numbers*/
+  public static double computeAverage(double[] values){
+    double total=0;  // to hold the total of all elements
+    double average=0; // to hold the average
+    for (int x=0; x<values.length; x++) // add the elements
+      total = total + values[x];
+    //compute the average
+    average=total/values.length ;  //1. average =  total divided by number of elements in array
+    return average;
+  }
+
+  /**Computes and returns the average of the elements of an array of integers*/
+  public static double computeAverage(int[] values){
+    double total=0;  // to hold the total of all elements
+    double average=0; // to hold the average
+    for (int x=0; x<values.length; x++) // add the elements
+      total = total + values[x];
+    //compute the average
+     average =(double)total/values.length;  // 2. average = total divided by number of elements in array
+    return average;
+  }
+
+  /**Finds and returns the index of the element with the lowest value from an array of integers*/
+  public static int findLowest(int[] values){
+    int result=0; // let lowest be the first element
+    for (int x=1; x<values.length; x++) // find out if an element after the first is lower
+      if (values[x] < values[result])
+         result = x;	// 3.  set result to the index  of lower element
+    return result;
+  }
+
+ /**Finds and returns the index of the element with the highest value from an array of integers*/
+  public static int findHighest(int[] values){
+    int result=0; // let highest be the first element
+    for (int x=1; x<values.length; x++) // find out if an element after the first is higher
+      if (values[x] > values[result])
+        result = x;	// 4. set result to the index of higher element
+    return result;
+  }
+
+  public static void showIntroduction(){
+      System.out.println("This program will prepare a summary of the annual consumption of water of a water distribution consumer.");
+      System.out.println("You will be asked to enter the name and type of the consumer,\n\tthe Water Meter reading at the start of the year,\n\tand the Water Meter reading at the end of each month.");
+      System.out.println();
+      return;  // 5. return statement
+  }
+
+  public static int readStartReading(){  // 6. Return type
+     int reading = 0;
+     Scanner kbd = new Scanner(System.in);
+     boolean problemFlag = false;
+     do {
+         problemFlag = false;
+         try {
+            System.out.print("Enter the  meter reading at the beginning of the year: ");
+            reading=Integer.parseInt(kbd.nextLine());// 7. Assign a value to reading through the input device
+         } catch (NumberFormatException x){
+  	  problemFlag = true;
+  	  System.out.println("You have to enter a number.");
+         }
+         if (reading < 0){
+             System.out.println("The beginning meter reading cannot be negative.");
+        }
+     } while (reading < 0 || problemFlag);
+     return reading;
+  }
+// Returns a copy of an array of integers
+
+public static int[] copyArray(int[] array){  // 8. return type
+    int[] kopya = new int[array.length];
+    for (int index=0; index<array.length; index++)
+        kopya[index] = array[index];
+   return kopya;
+}
+
+  public static int readEndOfMonthReading(int startReading, String month){
+     int reading = 0;
+     Scanner kbd = new Scanner(System.in);
+     boolean pFlag = false;
+    do {
+         pFlag = false;
+        try {
+           System.out.print("Enter the meter reading for month " + month + " :");
+           reading=Integer.parseInt(kbd.nextLine());// 9. Assign a value to reading through the input device
+        } catch (NumberFormatException x){
+               pFlag = true;
+              System.out.println("You have to enter a number.");
+       }
+       if (reading < startReading){
+           System.out.println("Invalid entry! The present reading must be greater than " + startReading + " , the reading at the start of the month.");
+      }
+    } while (reading < startReading || pFlag);
+   return reading;
+  }
+  public static char readTypeOfConsumer(){
+     char t='x';
+     Scanner kbd = new Scanner(System.in);
+     do {
+          System.out.print("Enter the type of the consumer< you may type r for residential or c for commercial>: ");
+          String input = kbd.nextLine();
+           t=input.charAt(0); // 10. Assign the first character of input to t
+           if (t != 'r' && t !='R' && t != 'c' && t != 'C'){
+   	System.out.println("The valid types are r for residential and c for commercial.");
+           }
+     } while (t != 'r' && t !='R' && t != 'c' && t != 'C');
+     return t;
+   }
+
+public static double computeAmountDue(int c, char t, int min1, double minB1, int min2, double minB2, float rate1, float rate2){
+    double amount = 0;
+    switch (t){  // 11. What is missed here?
+      case 'r':
+      case 'R':
+          if ( c <= min1 ) {
+            amount = minB1;
+          }
+         else {
+            amount = minB1 + (c-min1)*rate1;
+         }
+         break;
+      case 'c':
+      case 'C':
+          if ( c <= min2 ) {
+            amount = minB2;
+          }
+          else {
+            amount = minB2 + (c-min2)*rate2;
+         }
+     }
+    return amount;
+  }
+
+// show elements of two parallel arrays
+ public static void showSortedArray(int[] a, String[] m){
+     System.out.println("\nDescending Order of Water Consumption");
+     System.out.printf("%20s%15s%n", "Month","Consumption");
+     System.out.printf("%20s%15s%n", "--------------------","---------------");
+     for (int index=0; index<a.length; index++){
+        System.out.printf("%20s%20d%n", m[index],a[index]);
+		 // 12.  Complete the format string for this printf statement
+     }
+     System.out.printf("%20s%15s%n", "--------------------","---------------");
+    return;
+ }
+
+/**Sorts in descending order an array of integers in parallel with an array of strings.  The original array of integers is preserved while the original form of the array of strings is not preserved. The sorted array of integer is returned. */
+ public static int[] sortArray(int[] array, String[] month){
+    int minIndex=0;
+    int[] sorted= copyArray(array);
+    int temp=0;
+    String dummy="";
+    for (int x=0; x < sorted.length-1; x++){
+      minIndex = x;
+      for (int y=x+1; y<sorted.length; y++)
+          if (sorted[minIndex] < sorted[y]  )
+    	   minIndex = y;
+      if (minIndex != x){
+         temp = sorted[x];
+         sorted[x] = sorted[minIndex];
+         sorted[minIndex] = temp;
+         dummy = month[x];
+         month[x]=month[minIndex];   // 13.   What must be here so that elements of array month are swapped?
+         month[minIndex]=dummy;     // 14. What must be here so that elements of array month are swapped?
+     }
+    } // end of first for
+     return sorted;
+ }
+
+  public static void showSummary(String n, char t, String[] months, int[] previous, int[] present, int[] c, double[] amount){
+    System.out.println();
+    System.out.println("Annual Water Bill Summary");
+    System.out.println("Name of Consumer: " + n);
+    System.out.print("Type of consumer: ");
+    if (Character.toLowerCase(t) == 'r')
+        System.out.println("Residential");
+    if (Character.toLowerCase(t) == 'c')
+        System.out.println("Commercial");
+    System.out.println("Meter reading at the beginning of year  = " + previous[0] + " cubic meters");
+    System.out.printf("%15s%15s%15s%20s%n", "---------------", "--------------", "---------------", "--------------------");
+    System.out.printf("%15s%15s%15s%20s%n", "Month", "End Reading", "Consumption", "Amount Paid");
+    System.out.printf("%15s%15s%15s%20s%n", "---------------", "--------------", "---------------", "--------------------");
+    for (int index=0; index < previous.length; index++){
+       System.out.printf("%15s%15d%15d%20.2f%n", months[index], present[index],c[index] , amount[index]);
+    }
+    System.out.printf("%15s%15s%15s%20s%n", "---------------", "--------------", "---------------", "--------------------");
+    System.out.println("Average Monthly Reading = "+ computeAverage(c) + " cubic meters");
+    System.out.println("Average Monthly Payment = "+ computeAverage(amount));
+				 // 15. Use a method to get the average of the elements of array amount
+    System.out.println("Month with Lowest Water Consumption = "+ months[findLowest(c)]);
+    System.out.println("Month with Highest Water Consumption = "+ months[findHighest(c)]);
+				// 16. Get the index of the highest element of array c
+    System.out.printf("%15s%15s%15s%20s%n", "---------------", "--------------", "---------------", "--------------------");
+    return;
+  }
+
+  public static void main(String[] args){
+    Scanner kbd = new Scanner(System.in);
+    int[] presentReading= new int[12];
+    int[] startReading= new int[12];
+    int[] nCMUsed = new int[12]; // to hold number of cubic meters of water used for 12 months
+    double[] amountDue= new double[12]; // to hold the amount paid for 12 months
+    int[] sortedConsumption = new int[12]; // to hold sorted monthly consumption
+     String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "september", "October", "November", "December"};
+    String[] sortedMonths = {"January","February","March","April","May","June","July", "August", "September", "October", "November", "December"};
+    String consumer=""; // to hold name of consumer
+    char cType = 'x'; // to hold type of consumer
+    int minCMResidential=12; // to hold cut-off for minimum Bill for residential consumers
+    int minCMCommercial=30; // to hold cut-off for minimum Bill for commercial consumers
+    double minBillResidential=180.00; // minimum bill for <= 12 Cubic Meters used
+    float rateResidential =30.00F; //cost of 1 Cubic Meter above the minimum consumption
+    double minBillCommercial=600.00; // minimum bill for <= 20 cubic Meters used
+    float rateCommercial =50.00F; //cost of 1 Cubic Meter above the minimum consumption for commercial consumers
+    showIntroduction();
+    System.out.print("Enter the name of the water consumer: ");
+    consumer = kbd.nextLine();
+    cType = readTypeOfConsumer(); // 17. Invoke an appropriate method
+    startReading[0] = readStartReading(); // 18. Invoke readStartReading method
+    for (int index=0; index < nCMUsed.length; index++){
+       presentReading[index] = readEndOfMonthReading(startReading[index], months[index]);
+					// 19. Invoke an appropriate method
+       if (index < (nCMUsed.length - 1))
+         startReading[index+1] = presentReading[index];
+       nCMUsed[index] = presentReading[index] - startReading[index];
+       amountDue[index] = computeAmountDue(nCMUsed[index], cType, minCMResidential, minBillResidential, minCMCommercial, minBillCommercial, rateResidential, rateCommercial);
+     }
+    showSummary(consumer, cType, months, startReading, presentReading, nCMUsed, amountDue);
+    sortedConsumption = sortArray(nCMUsed, sortedMonths);
+     showSortedArray(sortedConsumption, sortedMonths);
+		// 20. Invoke showSortedArray method to display elements of sortedConsumption and sortedMonths arrays
+    System.exit(0);
+  } // end of main method
+ }  // end of class
